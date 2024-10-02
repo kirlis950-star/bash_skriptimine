@@ -1,0 +1,17 @@
+#!/bin/bash
+# Skript loob kasutaja ja määrab kodukataloogi
+
+if [ "$#" -ne 1 ]; then
+  echo "Kasutamine: $0 <kasutajanimi>"
+  exit 1
+fi
+
+kasutaja=$1
+useradd -m "$kasutaja"
+
+if [ $? -eq 0 ]; then
+  echo "Kasutaja $kasutaja on loodud."
+else
+  echo "Kasutaja loomine ebaõnnestus."
+fi
+
