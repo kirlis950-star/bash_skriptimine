@@ -1,0 +1,37 @@
+#!/bin/bash
+
+# Skript kasutajate täielikuks kustutamiseks
+# See skript kustutab kõik kasutajad, kelle nimi algab sõnaga "kasutaja" ja millele järgneb täht või number.
+# Lisaks eemaldatakse kasutajate failid ja grupid, et süsteemi ei jääks jälgi.
+
+prefix="kasutaja"
+
+echo "Kustutatakse kõik kasutajad, kelle nimi algab prefiksiga '$prefix'."
+
+# Loenda ja kustuta kõik kasutajad, kelle nimi algab prefiksiga 'kasutaja'
+while IFS=: read -r username _ uid _; do
+  if [[ $username == $prefix* ]]; then
+    echo "Kustutatakse kasutaja: $username (UID: $uid)"
+    
+    # 1. Kontrollime, kas kasutaja on süsteemi gruppide failis
+    user_groups=$(groups $username | cut -d: -f2)
+
+    # 2. Kustutame kasutaja ja tema kodukataloogi
+    sudo userdel -r "$username"
+
+    # 3. Eemaldame kõik kasutajaga seotud failid ja kaustad väljaspool kodukataloogi
+    echo "Kustutatakse kasutajaga seotud failid väljaspool kodukataloogi..."
+    sudo find / -path /proc -prune -o -user "$username" -exec rm -rf {} \; 2>/dev/null
+
+    # 4. Kui kasutaja grupid olid isiklikud ja neid enam ei kasutata, eemaldame ka need
+    for group in $user_groups; do
+      if [ "$(getent group $group)" ]; then
+        echo "Eemaldatakse grupp: $group"
+        sudo groupdel "$group"
+      fi
+    done
+  fi
+done < /etc/passwd
+
+echo "Kõik kasutajad, kelle nimi algas '$prefix', on kustutatud ja nende failid on eemaldatud."
+
