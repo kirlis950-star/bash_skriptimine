@@ -1,0 +1,101 @@
+# Linuxi Kasutajate Haldamise Skriptid
+
+See projekt sisaldab erinevaid bash skripte, mis aitavad hallata Linux süsteemi kasutajaid ja Apache2 veebiserverit.
+
+## Skriptide Kirjeldused
+
+### 1. run.sh (praks2)
+**Eesmärk:** Võimaldab interaktiivselt lisada uusi kasutajaid süsteemi.
+
+**Kuidas töötab:**
+- Küsib kasutajalt kasutajanime
+- Küsib, kas kasutaja kuulub "opilased" või "opetajad" gruppi
+- Loob kasutajale kodukataloogi
+- Laseb määrata parooli
+- Töötab kuni vajutad X klahvi
+
+**Kasutamine:**
+```bash
+./run.sh
+
+### 2. lisa_kasutaja (praks1)
+**Eesmärk:** Lihtne skript ühe kasutaja lisamiseks süsteemi.
+
+**Kasutamine:**
+```bash
+./lisa_kasutaja kasutajanimi
+```
+
+### 3. kasutajad_failist (praks1)
+**Eesmärk:** Loob mitu kasutajat korraga, lugedes nimed ja paroolid failist.
+
+**Kasutamine:**
+```bash
+./kasutajad_failist kasutajad.txt
+```
+
+### 4. kasutaja_turvagenereerimine (praks1)
+**Eesmärk:** Loob kasutajad ja genereerib neile automaatselt turvalised paroolid.
+
+**Kuidas töötab:**
+- Loeb kasutajanimed failist
+- Genereerib igale kasutajale turvalise parooli
+- Salvestab kasutajanimed ja paroolid logifaili
+
+**Kasutamine:**
+```bash
+./kasutaja_turvagenereerimine kasutajad.fail
+```
+
+### 5. remove_user (praks2)
+**Eesmärk:** Kustutab kõik kasutajad, kelle nimi algab sõnaga "kasutaja".
+
+**Mida teeb:**
+- Kustutab kasutaja konto
+- Eemaldab kasutaja kodukataloogid
+- Kustutab kõik kasutajaga seotud failid
+- Eemaldab kasutaja grupid
+
+**Kasutamine:**
+```bash
+sudo ./remove_user
+```
+
+### 6. apache_paigaldus.sh (praks3)
+**Eesmärk:** Paigaldab Apache2 veebiserveri.
+
+**Mida teeb:**
+- Kontrollib, kas Apache2 on juba paigaldatud
+- Kui ei ole, siis paigaldab selle
+- Käivitab teenuse
+- Näitab teenuse staatust
+
+**Kasutamine:**
+```bash
+sudo ./apache_paigaldus.sh
+```
+
+### 7. apache_eemaldus.sh (praks3)
+**Eesmärk:** Eemaldab Apache2 veebiserveri süsteemist.
+
+**Mida teeb:**
+- Kontrollib, kas Apache2 on paigaldatud
+- Peatab teenuse
+- Eemaldab Apache2 ja kõik seotud failid
+- Puhastab süsteemi ülejäänud failidest
+
+**Kasutamine:**
+```bash
+sudo ./apache_eemaldus.sh
+```
+
+## Oluline Teada
+- Kõik skriptid, mis muudavad süsteemi seadistusi (kasutajate lisamine/eemaldamine, Apache paigaldamine), vajavad administraatori õigusi (sudo)
+- Enne skriptide käivitamist veenduge, et teil on vajalikud õigused
+- Hoidke kasutajate paroolid turvalises kohas
+- Varundage oma andmed enne suuremaid muudatusi
+
+## Hoiatused
+- Olge ettevaatlik `remove_user` skriptiga, kuna see kustutab kasutajad ja nende failid jäädavalt
+- Ärge jagage paroole sisaldavaid faile teistega
+- Tehke alati varukoopiad enne massilisi muudatusi süsteemis
