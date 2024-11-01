@@ -1,5 +1,10 @@
 #!/bin/bash
 
+if [ "$(id -u)" -ne 0 ]; then
+  echo "Ainult root saab skripti käivitada."
+  exit 1
+fi
+
 if [ -z "$1" ]; then
   echo "Usage: $0 <failinimi>"
   exit 1
